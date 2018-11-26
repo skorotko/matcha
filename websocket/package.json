@@ -1,0 +1,17 @@
+{
+  "name": "php_and_socket",
+  "version": "1.0.0",
+  "description": "An aplication that displays real time chat without refreshing the page",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "vue-cli-service build"
+  },
+  "author": "vsarapin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  }
+}

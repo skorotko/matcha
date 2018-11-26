@@ -1,18 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skorotko
- * Date: 7/9/18
- * Time: 4:30 PM
- */
 
 namespace application\models;
 
+use \application\core\base\Model;
 
-class CheckFSNameAjax extends ModelsConroller
-{
-    public function __construct()
-    {
+class CheckFSNameAjax extends Model {
+    public function __construct() {
         parent::__construct();
         $_POST = json_decode(file_get_contents('php://input'), true);
         header('Access-Control-Allow-Origin: *');
@@ -20,30 +13,49 @@ class CheckFSNameAjax extends ModelsConroller
         header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
     }
 
-    public function switchFS(){
-        if(key($_POST) == "first_name"){
-            $this->checkFirstName($_POST['first_name']);
+    public function switchFS() {
+        if(isset($_POST['firstName'])){
+            $this->checkFirstName($_POST['firstName']);
+        }else if(isset($_POST['secondName'])){
+            $this->checkSecondName($_POST['secondName']);
         }else{
-            $this->checkFirstName($_POST['second_name']);
-        }
-    }
-
-    public function checkFirstName($firstName){
-        preg_match("/([A-Z^][A-z\-]{1,})|([А-Я^][А-я\-]{1,})/", $firstName, $array);
-        if(count($array) !== 0){
-            exit;
-        }else{
-            echo 'Incorrect! Your First Name must be contain ... ';
+            echo 'Incorrect! Field is empty';
             exit;
         }
     }
-
-    public function checkSecondName($secondName){
-        preg_match("/([A-Z^][A-z\-]{1,})|([А-Я^][А-я\-]{1,})/", $secondName, $array);
-        if(count($array[0]) !== 0){
+    
+    public function checkFirstName($firstName) {
+        preg_match("/([A-Z^][A-z\-]{1,})|([А-Я^][А-я\-]{1,})/u", $firstName, $array);
+        if (isset($array[0])) {
+            if(!strcmp($firstName, $array[0])){
+                echo "";
+                exit;
+            } else {
+            $answer = "Name rules:<br>Capital letter at the beginning<br>Can contain latin or cyrillic letters and \"-\"";
+            echo $answer;
             exit;
-        }else{
-            echo 'Incorrect! Your Second Name must be contain ... ;';
+        }
+    } else {
+        $answer = "Name rules:<br>Capital letter at the beginning<br>Can contain latin or cyrillic letters and \"-\"";
+        echo $answer;
+        exit;
+    }
+}
+    public function checkSecondName($secondName) {
+        preg_match("/([A-Z^][A-z\-]{1,})|([А-Я^][А-я\-]{1,})/u", $secondName, $array);
+        if (isset($array[0])) {
+            if(!strcmp($secondName, $array[0])){
+                echo "";
+                exit;
+            } else {
+                $answer = "Name rules:<br>Capital letter at the beginning<br>Can contain latin or cyrillic letters and \"-\"";
+                echo $answer;
+                exit;
+            }
+        } else {
+            $answer = "Name rules:<br>Capital letter at the beginning<br>Can contain latin or cyrillic letters and \"-\"";
+            echo $answer;
+            exit;
         }
     }
 }
